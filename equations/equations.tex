@@ -1,0 +1,26 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{cancel}
+\usepackage{steinmetz}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{caption}
+
+\begin{document}
+	
+	\[\tau\frac{dx_i}{dt} = -x_i + f_i\left(\sum_{i=1}^{N} \sum_{j=1}^{N} w_{ij}x_j + I_i\left(t\right)\right), N=4\]
+	\[f_i\left(y\right) = \frac{1}{1 + e^{-\gamma_i(y-0.5)}}\]
+	\[\gamma_i =
+		\begin{cases} 
+		8 & i\in \{ 1,2 \}\\
+		15 & i\in \{ 3,4 \}
+		\end{cases}
+	\]
+
+	
+\end{document}

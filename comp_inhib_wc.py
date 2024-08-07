@@ -30,7 +30,7 @@ def dxdt_v2(x, w, inj_excite, tau=20.0, tau_2=None, thresh=0.5, thresh_2=None,
     return x_
 
 
-def jacobian(x, w, thresh_1, thresh_2, steepness_1, steepness_2, inj_excite=0):
+def jacobian(x, w, thresh, thresh_2, steepness, steepness_2, inj_excite=0):
     """Jacobian of Wilson-Cowan ODEs (dxdt_v2)."""
     # NB: here, n_dim represents full rank of system (i.e., total number of
     # neural mass units across layers)
@@ -41,8 +41,8 @@ def jacobian(x, w, thresh_1, thresh_2, steepness_1, steepness_2, inj_excite=0):
     for i_idx in range(n_dim):
         # contribution from upper layer (units 0-1)
         for j_idx in range(n_dim // 2):
-            sig = sigmoid(g[i_idx], thresh_1, steepness_1)
-            dfdx = w[i_idx, j_idx] * steepness_1 * (1 / sig - 1) * sig ** 2
+            sig = sigmoid(g[i_idx], thresh, steepness)
+            dfdx = w[i_idx, j_idx] * steepness * (1 / sig - 1) * sig ** 2
             if i_idx == j_idx:
                 J[i_idx, j_idx] = -x[i_idx] + dfdx
             else:

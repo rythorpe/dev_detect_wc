@@ -115,10 +115,10 @@ def sim_dev(dev, w_ii, w_ij, w_ii_l2, w_ij_l2, w_fb, tau, tau_2,
 
     Returns
     -------
-    times : 
-    x : 
-    inj_excite : 
-    w : 
+    times :
+    x :
+    inj_excite :
+    w :
     """
 
     # integration params
@@ -147,7 +147,7 @@ def sim_dev(dev, w_ii, w_ij, w_ii_l2, w_ij_l2, w_fb, tau, tau_2,
 
     # repetative injected excitation (exogenous drive): half-period of square
     # wave at 20 ms, lasting 20 ms
-    inj_excite = np.zeros_like(x) + baseline
+    inj_excite = np.zeros_like(x)
     # calculate decendng offset values for each representation (dimension) that
     # are inj_delta apart, zero-centered
     inj_offsets = np.linspace(inj_delta, 0, n_dim)
@@ -202,7 +202,7 @@ def sim_dev(dev, w_ii, w_ij, w_ii_l2, w_ij_l2, w_fb, tau, tau_2,
                                 * rep_interval)
         # if within the time bounds of afferent drive for the evoked response,
         # apply injected excitation that surpasses baseline drive
-        inj_excite = np.zeros((n_units,))
+        inj_excite = np.full((n_units,), baseline, dtype=float)
         if t >= rep_tstart + 20.0 and t < rep_tstart + 40.0:
             for unit_idx in range(n_dim):
                 inj_excite[unit_idx::n_dim] = 0.5 + inj_offsets[unit_idx]
@@ -216,8 +216,6 @@ def sim_dev(dev, w_ii, w_ij, w_ii_l2, w_ij_l2, w_fb, tau, tau_2,
                 #     inj_excite[unit_idx::n_dim] = 0.5 - inj_offsets[unit_idx]
             # else:
             #     inj_excite *= (1 - dev)
-        else:
-            inj_excite = baseline
 
         return (dxdt_v2(x, w, inj_excite,
                         tau=tau, tau_2=tau_2,

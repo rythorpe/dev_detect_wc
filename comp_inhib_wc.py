@@ -126,7 +126,7 @@ def sim_dev(dev, w_ii, w_ij, w_ii_l2, w_ij_l2, w_fb, tau, tau_2,
     burn_in = 100  # ms
     # sim time: try 600 and fix below for one extra trial after dev
     # tstop = burn_in + 12 * rep_interval  # ms
-    tstop = burn_in + 4 * rep_interval  # ms
+    tstop = burn_in + 6 * rep_interval  # ms
     times = np.arange(0, tstop + dt, dt)
 
     # network params
@@ -208,14 +208,12 @@ def sim_dev(dev, w_ii, w_ij, w_ii_l2, w_ij_l2, w_fb, tau, tau_2,
                 inj_excite[unit_idx::n_dim] = 0.5 + inj_offsets[unit_idx]
 
             # on final trial, reduce injected excitation (exogneous drive)
-            if rep_tstart == tstop - rep_interval:
-            # if rep_tstart >= burn_in + (2 + dev) * rep_interval:  # noqa
+            if rep_tstart >= burn_in + (3 * rep_interval):
+            # if rep_tstart == tstop - rep_interval:  # noqa
             # if rep_tstart >= burn_in + (3 * rep_interval) and rep_tstart < burn_in + (6 * rep_interval):  # noqa
                 inj_excite *= (1 + dev)
                 # for unit_idx in range(n_dim):
                 #     inj_excite[unit_idx::n_dim] = 0.5 - inj_offsets[unit_idx]
-            # else:
-            #     inj_excite *= (1 - dev)
 
         return (dxdt_v2(x, w, inj_excite,
                         tau=tau, tau_2=tau_2,

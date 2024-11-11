@@ -64,7 +64,7 @@ def jacobian(x, w, tau, tau_2, thresh, thresh_2, steepness, steepness_2,
 def rk4(t, x, dt, dxdt):
 
     # Calculate slopes
-    k1, t_input_current = dxdt(t, x)
+    k1, I_prev = dxdt(t, x)
     k2, _ = dxdt(t + (dt / 2.), x + (k1 / 2.))
     k3, _ = dxdt(t + (dt / 2.), x + (k2 / 2.))
     k4, _ = dxdt(t + dt, x + k3)
@@ -73,7 +73,7 @@ def rk4(t, x, dt, dxdt):
     x_next = x + (dt / 6) * (k1 + (2 * k2) + (2 * k3) + k4)
     t_next = t + dt
 
-    return t_next, x_next, t_input_current
+    return t_next, x_next, I_prev
 
 
 def plot_sim_dev(times, x, ax_1):
@@ -147,7 +147,7 @@ def sim_dev(dev, w_ii, w_ij, w_ii_l2, w_ij_l2, w_fb, tau, tau_2,
 
     # repetative injected excitation (exogenous drive): half-period of square
     # wave at 20 ms, lasting 20 ms
-    inj_excite = np.zeros_like(x)
+    inj_excite = np.full_like(x, baseline, dtype=float)
     # calculate decendng offset values for each representation (dimension) that
     # are inj_delta apart, zero-centered
     inj_offsets = np.linspace(inj_delta, 0, n_dim)
@@ -234,9 +234,11 @@ def sim_dev(dev, w_ii, w_ij, w_ii_l2, w_ij_l2, w_fb, tau, tau_2,
     # NB: be sure to use pre-computed time values as time calculated
     # recursively contains too much rounding error
     for t_idx, time in enumerate(times[:-1]):
-        _time, x[t_idx + 1, :], inj_excite[t_idx, :] = rk4(time,
-                                                           x[t_idx, :].copy(),
-                                                           dt,
-                                                           dxdt_v2_w_injection)
+        _time_next, x[t_idx + 1, :], inj_excite[t_idx, :] = rk4(
+            time,
+            x[t_idx, :].copy(),
+            dt,
+            dxdt_v2_w_injection
+        )
 
     return times, x, inj_excite, w

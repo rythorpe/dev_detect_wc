@@ -101,7 +101,7 @@ def sim_dev(dev, w_ii, w_ij, w_ii_l2, w_ij_l2, w_fb, tau, tau_2,
     Parameters
     ----------
     dev : float
-
+        Change in afferent input during deviant evoked drive.
     w_ii : float
         Recurrent connection weight for diagonal elements (ith -> ith unit)
         of the connectivity matrix. This value should be >=0 since this
@@ -115,10 +115,14 @@ def sim_dev(dev, w_ii, w_ij, w_ii_l2, w_ij_l2, w_fb, tau, tau_2,
 
     Returns
     -------
-    times :
-    x :
-    inj_excite :
-    w :
+    times : array, shape (n_times,)
+        Discrete time points.
+    x : array, shape (n_times, n_units)
+        State variables for each unit over time.
+    inj_excite : array, shape (n_times, n_units)
+        Excitatory input at each time point.
+    w : array, shape (n_units, n_units)
+        Weight matrix.
     """
 
     # integration params

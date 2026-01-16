@@ -32,7 +32,13 @@ def dxdt_v2(x, w, inj_excite, tau=20.0, tau_2=None, thresh=0.5, thresh_2=None,
 
 def jacobian(x, w, tau, tau_2, thresh, thresh_2, steepness, steepness_2,
              inj_excite=0):
-    """Jacobian of Wilson-Cowan ODEs (dxdt_v2)."""
+    """Jacobian of Wilson-Cowan ODEs (dxdt_v2).
+    
+    Note that this function returns a transposed matrix relative to convention
+    to be conistent with the weight matrix format used in this repo,
+    with columns as the dependent variable (post-syn target), and rows as the
+    independent variable (pre-syn source).
+    """
     # NB: here, n_dim represents full rank of system (i.e., total number of
     # neural mass units across layers)
     n_dim = len(x)

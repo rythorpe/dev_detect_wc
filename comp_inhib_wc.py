@@ -71,9 +71,9 @@ def rk4(t, x, dt, dxdt):
 
     # Calculate slopes
     k1, I_prev = dxdt(t, x)
-    k2, _ = dxdt(t + (dt / 2.), x + (k1 / 2.))
-    k3, _ = dxdt(t + (dt / 2.), x + (k2 / 2.))
-    k4, _ = dxdt(t + dt, x + k3)
+    k2, _ = dxdt(t + (dt / 2.), x + (k1 * dt / 2.))
+    k3, _ = dxdt(t + (dt / 2.), x + (k2 * dt / 2.))
+    k4, _ = dxdt(t + dt, x + k3 * dt)
 
     # Calculate new x and y
     x_next = x + (dt / 6) * (k1 + (2 * k2) + (2 * k3) + k4)
